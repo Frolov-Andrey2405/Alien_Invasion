@@ -4,20 +4,20 @@ from pygame.sprite import Sprite
 
 
 class Alien(Sprite):
-    """Класс, представляющий одного пришельца"""
+    """Class representing one alien"""
 
     def __init__(self, ai_game):
-        """Инициализирует пришельца и задаёт его начальную позицию"""
+        """Initializes the alien and sets its initial position."""
         super().__init__()
         self.screen = ai_game.screen
 
-        # Загрузка изображениея прищельца и назначение атрибута rect
+        # Loading the squiggle image and assigning the attribute rect
         self.image = pygame.image.load('alien_invasion/images/alien.bmp')
         self.rect = self.image.get_rect()
 
-        # Каждый новый пришелец появляется в левом верхнем углу экрана
+        # Each new alien appears in the upper left corner of the screen
         self.rect.y = self.rect.width
         self.rect.x = self.rect.height
 
-        # Сохранение точной горизонтальной позиции пришельца
+        # Maintaining the exact horizontal position of the alien
         self.x = float(self.rect.x)

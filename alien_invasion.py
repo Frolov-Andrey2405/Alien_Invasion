@@ -10,17 +10,17 @@ from alien import Alien
 
 
 class AlienInvasion():
-    """Класс для управления ресурсами и поведением игры"""
+    """Class for managing resources and game behavior"""
 
     def __init__(self):
-        """Иницциализирует игру и создаёт игровые ресурсы"""
+        """Initializes the game and creates game resources."""
         pygame.init()
 
         # ---------------------------
         self.setting = Setting()
         # ---------------------------
 
-        # Создание окна
+        # Creating a window
         self.screen = pygame.display.set_mode(
             (0, 0), pygame.FULLSCREEN)
         self.setting.screen_width = self.screen.get_rect().width
@@ -34,7 +34,7 @@ class AlienInvasion():
         # ---------------------------
 
     def run_game(self):
-        """Запуск основного цикла игры"""
+        """Starting the main game cycle"""
         key = True
         while (key):
             self._check_events()
@@ -44,103 +44,101 @@ class AlienInvasion():
             self._create_fleet()
 
     def _check_events(self):
-        """Обрабатывает нажатия клавиш и события мыши"""
+        """Handles keystrokes and mouse events"""
         for event in pygame.event.get():
-            # Завершение работы
+            # Finishing the job
             if event.type == pygame.QUIT:
                 sys.exit()
 
-            # Класс для управление кораблём
+            # Class for controlling the ship
             elif event.type == pygame.KEYDOWN:
                 self._check_keydown_events(event)
             elif event.type == pygame.KEYUP:
                 self._check_keyup_events(event)
 
     def _check_keydown_events(self, event):
-        """Реагирует на нажатие клавиш"""
+        """Reacts to key presses"""
         if event.key == pygame.K_RIGHT:
             self.ship.moving_right = True
         elif event.key == pygame.K_LEFT:
             self.ship.moving_left = True
 
-        # Завершение работы по нажатию клавиши Q
+        # Quit by pressing Q
         elif event.key == pygame.K_q:
             sys.exit()
         elif event.key == pygame.K_SPACE:
             self._fire_bullet()
 
     def _check_keyup_events(self, event):
-        """Реагирует на отпускание клавиш"""
+        """Responds to Key Release"""
         if event.key == pygame.K_RIGHT:
             self.ship.moving_right = False
         elif event.key == pygame.K_LEFT:
             self.ship.moving_left = False
 
     def _fire_bullet(self):
-        """Создание нового снаряда и включение его в группу bullets"""
+        """Creating a new projectile and adding it to the bullets group"""
         if len(self.bullets) < self.setting.bullet_allowed:
             new_bullet = Bullet(self)
             self.bullets.add(new_bullet)
 
     def _create_fleet(self):
-        """Создание флота вторжения"""
+        """Creating the Invasion Fleet"""
 
-        # Создание пришельца и вычисление количества пришельцев в ряду
-        # Интервал между соседними пришельцами равен ширине пришельца
+        # Creating an alien and calculating the number of aliens in a row
+        # The interval between neighboring aliens is the width of the alien
 
         alien = Alien(self)
         alien_width, alien_height = alien.rect.size
         available_space_x = self.setting.screen_width - (2 * alien_width)
         number_aliens_x = available_space_x // (2 * alien_width)
 
-        """Определяет количество рядов, помещающихся на экране"""
+        """Specifies the number of rows that fit on the screen."""
         ship_height = self.ship.rect.height
         available_space_y = (
             self.setting.screen_height -
             (3 * alien_height) - ship_height)
         number_rows = available_space_y // (2 * alien_height)
 
-        # Создание флота вторжения
+        # Creating an invasion fleet
         for row_number in range(number_rows):
             for alien_number in range(number_aliens_x):
                 self._create_alien(alien_number, row_number)
 
-
     def _create_alien(self, alien_number, row_number):
-        """Создание пришельца и размещение его в ряду"""
+        """Creating an alien and placing it in a row"""
         alien = Alien(self)
         alien_width, alien_height = alien.rect.size
         alien.x = alien_width + 2 * alien_width * alien_number
         alien.rect.x = alien.x
-        alien.rect.y = ( alien.rect.height + 2 *
-                    alien.rect.height * row_number )
+        alien.rect.y = (alien.rect.height + 2 * alien.rect.height * row_number)
         self.aliens.add(alien)
 
     def _update_bullets(self):
-        """Обновляет позиции снарядов и уничтожает старые снаряды"""
+        """Updates projectile positions and destroys old projectiles"""
 
-        # Обновление позиции снарядов
+        # Updating projectile positions
         self.bullets.update()
 
-        # Удаление снарядов, вышедших за край экрана
+        # Removing projectiles that are over the edge of the screen
         for bullet in self.bullets.copy():
             if bullet.rect.bottom <= 0:
                 self.bullets.remove(bullet)
         print(len(self.bullets))
 
     def _update_screen(self):
-        """Обновляет изображение на экране и отображает новый экран"""
+        """Updates the screen image and displays a new screen"""
         self.screen.fill(self.setting.background_color)
         self.ship.blitme()
         for bullet in self.bullets.sprites():
             bullet.draw_bullet()
         self.aliens.draw(self.screen)
 
-        # Отображение последнего прорисованного экрана
+        # Display the last screen drawn
         pygame.display.flip()
 
 
 if __name__ == "__main__":
-    # Создание экземпляра и запуск кода
+    # Create an instance and run the code
     ai = AlienInvasion()
     ai.run_game()

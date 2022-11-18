@@ -2,40 +2,40 @@ import pygame
 
 
 class Ship():
-    """Класс для отображения корабля"""
+    """Class for ship display"""
 
     def __init__(self, ai_game):
 
-        # Инициализирует корабль и задает его начальную позицию
+        # Initializes the ship and sets its initial position
         self.screen = ai_game.screen
         self.setting = ai_game.setting
         self.screen_rect = ai_game.screen.get_rect()
 
-        # Загружает изображение корабля и получает прямоугольник
+        # Loads an image of the ship and gets a rectangle
         self.image = pygame.image.load('alien_invasion/images/ship.bmp')
         self.rect = self.image.get_rect()
 
-        # Каждый новый корабль появляется у нижнего края экрана
+        # Each new ship appears at the bottom edge of the screen
         self.rect.midbottom = self.screen_rect.midbottom
 
-        # Сохранение вещественной координаті центра корабля
+        # Saving the real coordinate of the ship's center
         self.x = float(self.rect.x)
 
-        # Флаги перемещения
+        # Flags of displacement
         self.moving_right = False
         self.moving_left = False
 
     def update(self):
-        """Обновляет позицию корабля с учётом флага"""
-        # Обновляется атрибутом x, не rect
+        """Updates ship's position based on the flag"""
+        # Updated with x attribute, not rect
         if self.moving_right and self.rect.right < self.screen_rect.right:
             self.x += self.setting.speed_ship
         if self.moving_left and self.rect.left > 0:
             self.x -= self.setting.speed_ship
 
-        # Обновление атрибута rect на основании self.x
+        # Update the rect attribute based on self.x
         self.rect.x = self.x
 
     def blitme(self):
-        # Рисует корабль в текущей позиции
+        # Draws the ship at the current position
         self.screen.blit(self.image, self.rect)
