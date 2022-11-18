@@ -12,7 +12,7 @@ class Alien(Sprite):
         self.screen = ai_game.screen
 
         # Loading the squiggle image and assigning the attribute rect
-        self.image = pygame.image.load('Alien_Invasion/images/alien.bmp')
+        self.image = pygame.image.load('Alien_Invasion\images/alien.bmp')
         self.rect = self.image.get_rect()
 
         # Each new alien appears in the upper left corner of the screen
