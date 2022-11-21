@@ -18,4 +18,4 @@ If he manages to destroy all the aliens, a new fleet appears that moves faster t
 | Arrows keys (left/right) | Move the ship (left/right) |
 | Space-bar | Shoot |
 
-#### Practical project of the "Python Crash Course" book.
+#### 📔 Practical project of the "Python Crash Course" book.
