@@ -1,35 +1,37 @@
 import pygame
+
+# --------------------------------
 from pygame.sprite import Sprite
+# --------------------------------
 
 
 class Bullet(Sprite):
-    """Class for controlling projectiles fired by a ship"""
+    '''A class that manages projectiles fired by the spaceship'''
 
-    def __init__(self, ai_game):
-        # Creates a projectile object at the current ship position
+    def __init__(self, ai_settings, screen, ship):
+        '''Creates an object for the projectile at the spacecraft's current position.'''
         super().__init__()
-        self.screen = ai_game.screen
-        self.setting = ai_game.setting
-        self.color = self.setting.bullet_color
+        self.screen = screen
 
-        # Creating a projectile in position (0, 0) and assigning the correct position
-        self.rect = pygame.Rect(0, 0,
-                                self.setting.bullet_width,
-                                self.setting.bullet_height)
-        self.rect.midtop = ai_game.ship.rect.midtop
+        # Create a rectangle for the projectile at (0, 0) and then set the correct position
+        self.rect = pygame.Rect(
+            0, 0, ai_settings.bullet_width, ai_settings.bullet_height)
+        self.rect.centerx = ship.rect.centerx
+        self.rect.top = ship.rect.top
 
-        # The position of the projectile is stored in a real format
+        # Store projectile position as a decimal value
         self.y = float(self.rect.y)
 
+        self.color = ai_settings.bullet_color
+        self.speed_factor = ai_settings.bullet_speed_factor
+
     def update(self):
-        """Moves the projectile up the screen"""
-
-        # Updating the projectile position in a real format
-        self.y -= self.setting.bullet_speed
-
-        # Refresh rectangle position
+        '''Move the projectile to the top of the screen.'''
+        # Update the decimal position of the projectile
+        self.y -= self.speed_factor
+        # Update rect position
         self.rect.y = self.y
 
     def draw_bullet(self):
-        # Projectile display
+        '''Draw the projectile on the screen.'''
         pygame.draw.rect(self.screen, self.color, self.rect)
